@@ -29,11 +29,4 @@ SELECT *
 
 DELETE
     FROM Orders
-    WHERE id = 3;
-    
-    
-UPDATE Custumers
-    SET firstname='Oleg',
-	middlename='Olegovich',
-        lastname='Olegov'
-    WHERE id = 2;
+    WHERE id = 3
