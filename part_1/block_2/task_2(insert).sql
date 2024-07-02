@@ -20,20 +20,3 @@ INSERT INTO Orders (id, type_of_repair, custumer_id, mechanic_id, parts_id, tota
     VALUES(1, replacing camshafts, 1, 1, 1, 70000.8),
         (2, replacing camshafts, 2, 2, 2, 50000.6),
         (3, replacing camshafts, 3, 3, 3, 30000.4);
-
-
-SELECT *
-    FROM Custumers
-    ORDER BY lastname;
-
-
-DELETE
-    FROM Orders
-    WHERE id = 3;
-    
-    
-UPDATE Custumers
-    SET firstname='Oleg',
-	middlename='Olegovich',
-        lastname='Olegov'
-    WHERE id = 2;
