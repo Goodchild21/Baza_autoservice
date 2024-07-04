@@ -17,6 +17,6 @@ INSERT INTO Parts (parts, price)
 
 
 INSERT INTO Orders (type_of_repair, custumer_id, mechanic_id, parts_id, total_price, created_date)
-    VALUES(replacing camshafts, 1, 1, 1, 70000.8),
-        (replacing camshafts, 2, 2, 2, 50000.6),
-        (replacing camshafts, 3, 3, 3, 30000.4);
+    VALUES('replacing camshafts', 1, 1, 1, 70000.8),
+        ('replacing camshafts', 2, 2, 2, 50000.6),
+        ('replacing camshafts', 3, 3, 3, 30000.4);
