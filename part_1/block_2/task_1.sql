@@ -1,7 +1,7 @@
 INSERT INTO Сustumers (firstname, middlename, lastname, phone)
-    VALUES('Aleksey', 'Aleksandrovich', 'Batashev', 89534217689),
-        ('Ivan', 'Ivanovich', 'Ivanov', 89534217690),
-        ('Pedr', 'Pedrovich', 'Shpak', 89534217691);
+    VALUES('Aleksey', 'Aleksandrovich', 'Batashev', '89534217689'),
+        ('Ivan', 'Ivanovich', 'Ivanov', '89534217690'),
+        ('Pedr', 'Pedrovich', 'Shpak', '89534217691');
 
 
 INSERT INTO Mechanics (firstname, middlename, lastname, specialization)
