@@ -15,6 +15,10 @@ class Custumers(Base):
     lastname = dz_orm.Column('lastname', dz_orm.Text, nullable=False)
     phone = dz_orm.Column('phone', dz_orm.String(11), nullable=False)
 
+    def __repr__(self):
+        return f'{self.firstname} {self.middlename} {self.lastname}: {self.phone}'
+
+
 class Mechanics(Base):
     __tablename__ = 'mechanics'
 
@@ -24,12 +28,17 @@ class Mechanics(Base):
     lastname = dz_orm.Column('lastname', dz_orm.Text)
     specialization = dz_orm.Column('specialization', dz_orm.String(50), nullable=False)
 
+    def __repr__(self):
+        return f'{self.firstname} {self.middlename}: {self.specialization}'
+
+
 class Parts(Base):
     __tablename__ = 'parts'
 
     id = dz_orm.Column('id', dz_orm.Integer, primary_key=True)
     parts = dz_orm.Column('parts', dz_orm.Text)
     price = dz_orm.Column('price', dz_orm.Float)
+
 
 class Orders(Base):
     __tablename__ = 'orders'
@@ -41,7 +50,6 @@ class Orders(Base):
     parts_id = dz_orm.Column('parts_id', dz_orm.Integer, dz_orm.ForeignKey(Parts.id))
     total_price = dz_orm.Column('total_price', dz_orm.Float)
     created_date = dz_orm.Column('created_date', dz_orm.String, default=datetime.datetime.now())
-
 
 
 Base.metadata.drop_all(engine)
@@ -68,17 +76,17 @@ with Session(engine) as conn:
     input_3_3 = Parts(parts='spark_plug х 4', price=16400.4)
 
     
-    input_3_1 = Orders(type_of_repair='replacing camshafts',
+    input_4_1 = Orders(type_of_repair='replacing camshafts',
                         custumer_id=1,
                         mechanic_id=1,
                         parts_id=1,
                         total_price=70000.8)
-    input_3_2 = Orders(type_of_repair='replacing transmission oil',
+    input_4_2 = Orders(type_of_repair='replacing transmission oil',
                         custumer_id=2,
                         mechanic_id=2,
                         parts_id=2,
                         total_price=50000.6)
-    input_3_3 = Orders(type_of_repair='replacing spark plug',
+    input_4_3 = Orders(type_of_repair='replacing spark plug',
                         custumer_id=3,
                         mechanic_id=3,
                         parts_id=3,
@@ -91,4 +99,39 @@ with Session(engine) as conn:
     conn.add_all([input_1_1, input_1_2, input_1_3])
     conn.add_all([input_2_1, input_2_2, input_2_3])
     conn.add_all([input_3_1, input_3_2, input_3_3])
+    conn.add_all([input_4_1, input_4_2, input_4_3])
     conn.commit()
+
+
+
+# ----------------------------------Изменения и выборки-----------------------------------
+with Session(engine) as session:
+    #+ Ivana меняет а Pedra нет(((
+    session.query(Custumers).filter(Custumers.firstname == 'Ivan' and 'Pedr').update({'firstname': 'Oleg', 'middlename': 'Olegovich', 'lastname': 'Olegov'})
+    session.query(Custumers).filter(Custumers.id == 3).update({'firstname': 'Oleg', 'middlename': 'Olegovich', 'lastname': 'Olegov'})
+    
+    #+
+    delete_1 = session.query(Orders).filter_by(id=3).first()
+    session.delete(delete_1)
+
+    #+
+    delete_2 = session.query(Mechanics).filter_by(specialization='all_questions').first()#Можно через .one()
+    session.delete(delete_2)
+
+    #+
+    save_point_1 = session.begin_nested()#savepoint для rollback
+    update_1 = session.query(Mechanics).filter(Mechanics.specialization == 'gearbox_repair').update({'specialization': 'Grand_master_boy'})
+
+    #+
+    select_1 = session.query(Custumers).all()
+    # print(select_1)
+
+    #+ вернет объект если не вписать метод __repr__
+    select_2 = session.query(Mechanics).filter_by(specialization = 'engine_repair').one()
+    # print(select_2)
+
+    #?
+    join_1 = session.query(Custumers).join(Orders, Custumers.id == Orders.custumer_id)
+
+    save_point_1.rollback()
+    session.commit()
