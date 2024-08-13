@@ -95,14 +95,14 @@ with engine.connect() as conn:
                                         parts_id=1,
                                         total_price=70000.8)
     input_2 = dz_core.insert(orders).values(type_of_repair='replacing transmission oil',
-                                        custumer_id=1,
-                                        mechanic_id=1,
-                                        parts_id=1,
+                                        custumer_id=2,
+                                        mechanic_id=2,
+                                        parts_id=2,
                                         total_price=70000.8)
     input_3 = dz_core.insert(orders).values(type_of_repair='replacing spark plug',
-                                        custumer_id=1,
-                                        mechanic_id=1,
-                                        parts_id=1,
+                                        custumer_id=3,
+                                        mechanic_id=3,
+                                        parts_id=3,
                                         total_price=70000.8)
     conn.execute(input_1)
     conn.execute(input_2)
@@ -112,37 +112,32 @@ with engine.connect() as conn:
 
 # ----------------------------------Изменения и выборки-----------------------------------
 with engine.connect() as conn:
-    # - 
-    update_1 = dz_core.update(mechanics).where(mechanics.c.middlename == 'Sipliy').values(specialization='Grand_master_boy')
+    # +
+    update_1 = dz_core.update(mechanics).values(specialization='Grand_master_boy').where(mechanics.c.middlename == 'Sipliy')
+    conn.execute(update_1)
+    # select_test = dz_core.select(mechanics)
+    # print(conn.execute(select_test).all())
 
-    select_test = dz_core.select(mechanics)
-    print(conn.execute(select_test).all())
-
-
-    # -
+    # +
     update_2 = dz_core.update(custumers).where(custumers.c.id == 2).values(firstname='Oleg', middlename='Olegovich', lastname='Olegov')
-
-    select_test1 = dz_core.select(custumers)
-    print(conn.execute(select_test1).all())
-
+    conn.execute(update_2)
+    # select_test1 = dz_core.select(custumers)
+    # print(conn.execute(select_test1).all())
 
     # +
     delete_1 = dz_core.delete(orders).where(orders.c.id == 3)
     conn.execute(delete_1)
-
-    select_test2 = dz_core.select(orders)
-    print(conn.execute(select_test2).all())
-
-
-    # -
-    delete_2 = dz_core.delete(mechanics).where(mechanics.c.specialization == 'all_questions')
-    conn.execute(delete_1)
-
-    select_test3 = dz_core.select(mechanics)
-    print(conn.execute(select_test3).all())
-
+    # select_test2 = dz_core.select(orders)
+    # print(conn.execute(select_test2).all())
 
     # +
-    select_1 = dz_core.select(custumers.c.lastname == 'Batashev')
-    print(conn.execute(select_1).all())
+    delete_2 = dz_core.delete(mechanics).where(mechanics.c.specialization == 'all_questions')
+    conn.execute(delete_2)
+    # select_test3 = dz_core.select(mechanics)
+    # print(conn.execute(select_test3).all())
+
+    # +
+    select_1 = dz_core.select(custumers).where(custumers.c.lastname == 'Batashev')
+    # print(conn.execute(select_1).first())
+
     conn.commit()
